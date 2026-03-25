@@ -341,7 +341,43 @@
   <!-- ===== PANEL 1: OVERVIEW ===== -->
   <div class="panel active" id="panel-overview">
     <div class="diagram-wrap">
-      <svg width="100%" viewBox="0 0 680 480">
+      <!--
+        CLEAN LAYOUT — viewBox 680 x 560
+        All nodes, arrows, and labels placed with explicit clear-zone reasoning.
+
+        NODE POSITIONS (x, y, w, h):
+          Emotional stock:      x=50,  y=60,  w=180, h=68  → right edge x=230, bottom y=128, centre (140, 94)
+          Cognitive stock:      x=450, y=60,  w=200, h=68  → left edge x=450, bottom y=128, centre (550, 94)
+          Executive stock:      x=240, y=240, w=200, h=68  → top y=240, bottom y=308, centre (340, 274)
+          High-demand:          x=460, y=240, w=170, h=56  → left edge x=460, centre (545, 268)
+          Processing-optimal:   x=50,  y=400, w=240, h=84  → right edge x=290, top y=400, centre (170, 442)
+          Time delay:           x=400, y=390, w=220, h=96  → centre (510, 438)
+
+        ARROWS and their label zones:
+          1. Background drain (pink dashed): Emotional bottom-right (200,128) → Executive top (300,240)
+             Curves through clear zone right of Emotional, left of Executive top.
+             Label at x=270, y=190 (open space between the two boxes, right of curve midpoint)
+
+          2. Directs processing (blue dashed): Executive top-left (260,240) → Emotional bottom (130,128)
+             Curves left through open zone. Needs to stay left of background drain curve.
+             Label at x=155, y=210 (below the curve midpoint, above Executive box)
+
+          3. High-demand → Cognitive (green solid): High-demand top (535,240) → Cognitive bottom (535,128)
+             Straight vertical line in right column.
+             No label needed — visually obvious.
+
+          4. High-demand → Executive (gray solid): High-demand left (460,268) → Executive right (440,274)
+             Short horizontal stub.
+
+          5. Processing-optimal → Emotional (amber solid): Proc-opt left-top (65,400) → Emotional bottom-left (90,128)
+             Runs up the far left edge, clear of all other lines.
+             Label at x=38, y=275 (rotated, or 3 lines at x=38)
+
+          6. Processing-optimal → Executive (amber dashed): Proc-opt right (290,442) → Executive bottom (340,308)
+             Curves right then up in the open zone between the two boxes.
+             Label at x=360, y=380 (right of curve, clear of Time delay box)
+      -->
+      <svg width="100%" viewBox="0 0 680 560">
         <defs>
           <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -349,79 +385,90 @@
         </defs>
 
         <!-- Outer border -->
-        <rect x="30" y="30" width="620" height="420" rx="14" fill="none" stroke="#D3D1C7" stroke-width="0.5"/>
+        <rect x="30" y="36" width="620" height="500" rx="14" fill="none" stroke="#D3D1C7" stroke-width="0.5"/>
 
-        <!-- STOCK 1: Emotional -->
+        <!-- ── NODES ── -->
+
+        <!-- Emotional stock: x=50 y=60 w=180 h=68 -->
         <g onclick="showInfo('Emotional stock is the accumulation of unprocessed feelings and experiences. It builds continuously — through events, interactions, grief — and drains only through processing. High emotional stock creates background cognitive load even during rest, which is why exhaustion persists even when no new demands are placed on the system.')" style="cursor:pointer">
-          <rect x="60" y="60" width="188" height="80" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
-          <text x="154" y="94" text-anchor="middle" font-size="14" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional stock</text>
-          <text x="154" y="115" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">Unprocessed experiences</text>
+          <rect x="50" y="60" width="180" height="68" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
+          <text x="140" y="89" text-anchor="middle" font-size="14" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional stock</text>
+          <text x="140" y="109" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">Unprocessed experiences</text>
         </g>
 
-        <!-- STOCK 2: Executive -->
-        <g onclick="showInfo('Executive stock is the finite capacity to direct attention — to process emotional material, make decisions, regulate behavior, and engage with the world. It is the bottleneck of the system. When it is depleted, every other function degrades: emotional processing halts, decision-making fails, and the reinforcing collapse loop begins.')" style="cursor:pointer">
-          <rect x="246" y="200" width="188" height="80" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
-          <text x="340" y="234" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C" font-family="'DM Sans', sans-serif">Executive stock</text>
-          <text x="340" y="255" text-anchor="middle" font-size="12" fill="#185FA5" font-family="'DM Sans', sans-serif">Attention capacity</text>
-        </g>
-
-        <!-- STOCK 3: Cognitive -->
+        <!-- Cognitive stock: x=450 y=60 w=200 h=68 -->
         <g onclick="showInfo('Cognitive stock is general cognitive resource — working memory, processing speed, learning capacity. It is depleted by active learning, social engagement, creative generation, and analytical work. Unlike emotional stock, cognitive stock replenishes relatively quickly with rest — but only if emotional stock is not simultaneously draining executive resources in the background.')" style="cursor:pointer">
-          <rect x="432" y="60" width="188" height="80" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
-          <text x="526" y="94" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" font-family="'DM Sans', sans-serif">Cognitive stock</text>
-          <text x="526" y="115" text-anchor="middle" font-size="12" fill="#0F6E56" font-family="'DM Sans', sans-serif">Working memory / learning</text>
+          <rect x="450" y="60" width="200" height="68" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+          <text x="550" y="89" text-anchor="middle" font-size="14" font-weight="500" fill="#085041" font-family="'DM Sans', sans-serif">Cognitive stock</text>
+          <text x="550" y="109" text-anchor="middle" font-size="12" fill="#0F6E56" font-family="'DM Sans', sans-serif">Working memory / learning</text>
         </g>
 
-        <!-- Background drain: Emotional → Executive -->
-        <path d="M 154 140 C 154 178, 246 220, 246 240" fill="none" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="5 3"/>
-        <text x="165" y="188" text-anchor="middle" font-size="11" fill="#D4537E" font-family="'DM Sans', sans-serif">background</text>
-        <text x="165" y="201" text-anchor="middle" font-size="11" fill="#D4537E" font-family="'DM Sans', sans-serif">drain</text>
-
-        <!-- High demand activities box -->
-        <g onclick="showInfo('High-depletion activities — PHP sessions, creative work, social gatherings, active learning — keep the conscious mind fully occupied. They prevent the default mode network from activating and generate new material that itself requires processing. Both executive and cognitive stocks are taxed simultaneously.')">
-          <rect x="420" y="196" width="142" height="56" rx="8" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5" style="cursor:pointer"/>
-          <text x="491" y="221" text-anchor="middle" font-size="12" fill="#5F5E5A" font-family="'DM Sans', sans-serif">High-demand</text>
-          <text x="491" y="238" text-anchor="middle" font-size="12" fill="#5F5E5A" font-family="'DM Sans', sans-serif">activities</text>
+        <!-- Executive stock: x=240 y=240 w=200 h=68 -->
+        <g onclick="showInfo('Executive stock is the finite capacity to direct attention — to process emotional material, make decisions, regulate behavior, and engage with the world. It is the bottleneck of the system. When it is depleted, every other function degrades: emotional processing halts, decision-making fails, and the reinforcing collapse loop begins.')" style="cursor:pointer">
+          <rect x="240" y="240" width="200" height="68" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+          <text x="340" y="269" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C" font-family="'DM Sans', sans-serif">Executive stock</text>
+          <text x="340" y="289" text-anchor="middle" font-size="12" fill="#185FA5" font-family="'DM Sans', sans-serif">Attention capacity</text>
         </g>
-        <!-- Arrow: high-demand depletes cognitive -->
-        <path d="M 562 196 C 562 156, 526 140, 526 140" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr1)"/>
-        <!-- Arrow: high-demand depletes executive -->
-        <path d="M 420 224 L 434 224" fill="none" stroke="#888780" stroke-width="1" marker-end="url(#arr1)"/>
 
-        <!-- Executive directs processing of emotional -->
-        <path d="M 340 200 C 340 170, 432 122, 432 100" fill="none" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="4 3"/>
-        <text x="416" y="158" text-anchor="middle" font-size="11" fill="#185FA5" font-family="'DM Sans', sans-serif">directs</text>
-        <text x="416" y="171" text-anchor="middle" font-size="11" fill="#185FA5" font-family="'DM Sans', sans-serif">processing</text>
+        <!-- High-demand activities: x=460 y=240 w=170 h=56 -->
+        <g onclick="showInfo('High-depletion activities — PHP sessions, creative work, social gatherings, active learning — keep the conscious mind fully occupied. They prevent the default mode network from activating and generate new material that itself requires processing. Both executive and cognitive stocks are taxed simultaneously.')" style="cursor:pointer">
+          <rect x="460" y="242" width="170" height="56" rx="8" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5"/>
+          <text x="545" y="268" text-anchor="middle" font-size="12" fill="#5F5E5A" font-family="'DM Sans', sans-serif">High-demand</text>
+          <text x="545" y="285" text-anchor="middle" font-size="12" fill="#5F5E5A" font-family="'DM Sans', sans-serif">activities</text>
+        </g>
 
-        <!-- Processing-optimal zone -->
+        <!-- Processing-optimal zone: x=50 y=400 w=240 h=84 -->
         <g onclick="showInfo('Processing-optimal activities are the Goldilocks zone — they occupy just enough attention to prevent rumination while allowing the default mode network to activate. The DMN then works through unprocessed emotional material in the background, integrating experiences and consolidating memory. Walking, dishes, showering, familiar routes all qualify. Modern technology has systematically eliminated these moments.')" style="cursor:pointer">
-          <rect x="60" y="340" width="240" height="90" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
-          <text x="180" y="368" text-anchor="middle" font-size="13" font-weight="500" fill="#633806" font-family="'DM Sans', sans-serif">Processing-optimal zone</text>
-          <text x="180" y="387" text-anchor="middle" font-size="11" fill="#854F0B" font-family="'DM Sans', sans-serif">Walking, dishes, familiar tasks</text>
-          <text x="180" y="403" text-anchor="middle" font-size="11" fill="#854F0B" font-family="'DM Sans', sans-serif">DMN activates → integration occurs</text>
+          <rect x="50" y="400" width="240" height="84" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+          <text x="170" y="428" text-anchor="middle" font-size="13" font-weight="500" fill="#633806" font-family="'DM Sans', sans-serif">Processing-optimal zone</text>
+          <text x="170" y="447" text-anchor="middle" font-size="11" fill="#854F0B" font-family="'DM Sans', sans-serif">Walking, dishes, familiar tasks</text>
+          <text x="170" y="464" text-anchor="middle" font-size="11" fill="#854F0B" font-family="'DM Sans', sans-serif">DMN activates → integration occurs</text>
         </g>
 
-        <!-- Processing-optimal reduces emotional stock -->
-        <path d="M 180 340 C 154 295, 120 240, 116 140" fill="none" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr1)"/>
-        <text x="90" y="265" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">processes</text>
-        <text x="90" y="278" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">emotional</text>
-        <text x="90" y="291" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">stock ↓</text>
-
-        <!-- Processing-optimal restores executive -->
-        <path d="M 240 385 C 305 405, 332 385, 340 280" fill="none" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="4 3"/>
-        <text x="322" y="368" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">restores</text>
-        <text x="322" y="381" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">executive</text>
-
-        <!-- Time delay box -->
+        <!-- Time delay: x=400 y=390 w=220 h=96 -->
         <g onclick="showInfo('Time delays are one of the most disorienting features of this system. The effect of switching to online PHP, or adding social time, or reducing demands does not appear in your stocks immediately — it appears days later. This is why people overcorrect: they make a change, feel no improvement, make another change, and then all effects arrive at once causing a different kind of overwhelm. Decisions always need to account for this lag.')" style="cursor:pointer">
-          <rect x="430" y="336" width="198" height="92" rx="10" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="6 3"/>
-          <text x="529" y="364" text-anchor="middle" font-size="13" font-weight="500" fill="#444441" font-family="'DM Sans', sans-serif">Time delay</text>
-          <text x="529" y="384" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">Changes take days to register</text>
-          <text x="529" y="400" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">in stock levels — explains</text>
-          <text x="529" y="416" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">the overcorrection pattern</text>
+          <rect x="400" y="390" width="220" height="96" rx="10" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="6 3"/>
+          <text x="510" y="418" text-anchor="middle" font-size="13" font-weight="500" fill="#444441" font-family="'DM Sans', sans-serif">Time delay</text>
+          <text x="510" y="438" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">Changes take days to register</text>
+          <text x="510" y="454" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">in stock levels — explains</text>
+          <text x="510" y="470" text-anchor="middle" font-size="11" fill="#5F5E5A" font-family="'DM Sans', sans-serif">the overcorrection pattern</text>
         </g>
 
-        <text x="340" y="466" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Click any element to learn more</text>
+        <!-- ── ARROWS ── -->
+
+        <!-- 1. Background drain: exits Emotional bottom-right (200,128), curves to Executive top (290,240) — dashed pink -->
+        <!-- Path stays in the zone x=200–290, y=128–240, well right of Emotional and left of Cognitive -->
+        <path d="M 200 128 C 210 180, 270 210, 285 240" fill="none" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="5 3"/>
+        <!-- Label: pushed right and up, clear of directs processing -->
+        <text x="310" y="160" text-anchor="start" font-size="11" fill="#D4537E" font-family="'DM Sans', sans-serif">background drain</text>
+
+        <!-- 2. Directs processing: exits Executive left (240,256), arcs left through clear zone to Emotional bottom (115,128) — dashed blue -->
+        <!-- Stays clearly left of arrow 1, arc apex around x=190, y=195 -->
+        <path d="M 240 256 C 195 245, 165 195, 120 128" fill="none" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="4 3"/>
+        <!-- Label: left of arc, in open zone -->
+        <text x="118" y="232" text-anchor="middle" font-size="11" fill="#185FA5" font-family="'DM Sans', sans-serif">directs processing</text>
+
+        <!-- 3. High-demand depletes Cognitive: High-demand top (550,242) → Cognitive bottom (550,128) — solid green, straight -->
+        <line x1="550" y1="242" x2="550" y2="128" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+        <!-- 4. High-demand depletes Executive: High-demand left (460,270) → Executive right (440,270) — gray stub -->
+        <line x1="460" y1="270" x2="440" y2="270" stroke="#888780" stroke-width="1.2" marker-end="url(#arr1)"/>
+
+        <!-- 5. Processing-optimal → Emotional: exits Proc-opt top-left (70,400), runs up left edge to Emotional bottom (90,128) — solid amber -->
+        <path d="M 70 400 C 70 300, 75 200, 90 128" fill="none" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr1)"/>
+        <!-- Label: 3 lines at x=44, y=270–296, left of arrow, in clear left-margin zone -->
+        <text x="44" y="270" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">processes</text>
+        <text x="44" y="284" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">emotional</text>
+        <text x="44" y="298" text-anchor="middle" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">stock ↓</text>
+
+        <!-- 6. Processing-optimal → Executive: exits top of Proc-opt (220,400), curves right then up to Executive bottom (340,308) — dashed amber -->
+        <!-- Route: up from top of box, angling right toward Executive centre-bottom -->
+        <path d="M 220 400 C 220 360, 300 340, 340 308" fill="none" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="4 3"/>
+        <!-- Label: right of the curve midpoint, in open space -->
+        <text x="375" y="420" text-anchor="start" font-size="11" fill="#BA7517" font-family="'DM Sans', sans-serif">restores executive</text>
+
+        <!-- Footer hint — inside outer border, well below all elements -->
+        <text x="340" y="544" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Click any element to learn more</text>
       </svg>
     </div>
 
@@ -441,87 +488,120 @@
   <!-- ===== PANEL 2: FEEDBACK LOOPS ===== -->
   <div class="panel" id="panel-loops">
     <div class="diagram-wrap">
-      <svg width="100%" viewBox="0 0 680 460">
+      <!--
+        Layout plan (viewBox 680 x 580):
+        LEFT COLUMN  x=40..300  (centre x=170): 4 nodes top-to-bottom, return arrow on far left
+        DIVIDER      x=340
+        RIGHT COLUMN x=380..640 (centre x=510): 3 nodes top-to-bottom, return arrow on far right
+
+        Left nodes (height=60, gap=60 between bottom of one and top of next):
+          Node 1 (Executive depletion):      y=70..130
+          Node 2 (Functional impairment):    y=220..280
+          Node 3 (Negative self-interp):     y=370..430
+          Node 4 (Emotional stock / shame):  y=480..540   ← bottom of chain
+          Return arrow: x=40, from y=540 up to y=70
+
+        Right nodes (height=60, gap=100):
+          Node A (Emotional pressure):  y=70..130
+          Node B (Valve opening):       y=270..330
+          Node C (Processing occurs):   y=470..530
+          Return arrow: x=640, from y=530 up to y=70
+      -->
+      <svg width="100%" viewBox="0 0 680 630">
         <defs>
           <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </marker>
         </defs>
 
-        <!-- REINFORCING LOOP -->
-        <text x="170" y="36" text-anchor="middle" font-size="13" font-weight="500" fill="#1C1B18" font-family="'DM Sans', sans-serif">Reinforcing collapse loop</text>
-        <text x="170" y="52" text-anchor="middle" font-size="11" fill="#888780" font-family="'DM Sans', sans-serif">Each pass amplifies the original condition</text>
+        <!-- ── COLUMN HEADERS ── -->
+        <text x="170" y="34" text-anchor="middle" font-size="13" font-weight="500" fill="#1C1B18" font-family="'DM Sans', sans-serif">Reinforcing collapse loop</text>
+        <text x="170" y="50" text-anchor="middle" font-size="11" fill="#888780" font-family="'DM Sans', sans-serif">Each pass amplifies the original condition</text>
 
+        <text x="510" y="34" text-anchor="middle" font-size="13" font-weight="500" fill="#1C1B18" font-family="'DM Sans', sans-serif">Balancing loop</text>
+        <text x="510" y="50" text-anchor="middle" font-size="11" fill="#888780" font-family="'DM Sans', sans-serif">Titration seeks safe equilibrium</text>
+
+        <!-- ── DIVIDER ── -->
+        <line x1="340" y1="58" x2="340" y2="570" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+        <!-- ══ LEFT: REINFORCING LOOP ══ -->
+
+        <!-- Node 1: Executive depletion  y=70..130 -->
         <g onclick="showInfo2('Executive depletion is the starting condition. When the executive stock runs low — from PHP, creative work, social demands — the system loses its capacity to process emotional material or regulate behavior. Everything downstream degrades. The critical insight is that this is a resource problem, not a character problem.')" style="cursor:pointer">
-          <rect x="50" y="72" width="240" height="60" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
-          <text x="170" y="99" text-anchor="middle" font-size="13" font-weight="500" fill="#712B13" font-family="'DM Sans', sans-serif">Executive depletion</text>
-          <text x="170" y="117" text-anchor="middle" font-size="12" fill="#993C1D" font-family="'DM Sans', sans-serif">Resource exhausted</text>
+          <rect x="60" y="70" width="220" height="60" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+          <text x="170" y="97" text-anchor="middle" font-size="13" font-weight="500" fill="#712B13" font-family="'DM Sans', sans-serif">Executive depletion</text>
+          <text x="170" y="115" text-anchor="middle" font-size="12" fill="#993C1D" font-family="'DM Sans', sans-serif">Resource exhausted</text>
         </g>
+        <!-- ↓ arrow 1→2 -->
+        <line x1="170" y1="130" x2="170" y2="220" stroke="#D85A30" stroke-width="1.5" marker-end="url(#arr2)"/>
 
+        <!-- Node 2: Functional impairment  y=220..280 -->
         <g onclick="showInfo2('When executive stock is depleted, the system cannot function at its normal level. High-depletion tasks become impossible. Creative work stalls. Social engagement costs too much. The critical move is what happens next — because rather than reading this as a resource problem, the mind often reads it as a character problem.')" style="cursor:pointer">
-          <rect x="50" y="196" width="240" height="60" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
-          <text x="170" y="223" text-anchor="middle" font-size="13" font-weight="500" fill="#712B13" font-family="'DM Sans', sans-serif">Functional impairment</text>
-          <text x="170" y="241" text-anchor="middle" font-size="12" fill="#993C1D" font-family="'DM Sans', sans-serif">Capacity visibly fails</text>
+          <rect x="60" y="220" width="220" height="60" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+          <text x="170" y="247" text-anchor="middle" font-size="13" font-weight="500" fill="#712B13" font-family="'DM Sans', sans-serif">Functional impairment</text>
+          <text x="170" y="265" text-anchor="middle" font-size="12" fill="#993C1D" font-family="'DM Sans', sans-serif">Capacity visibly fails</text>
         </g>
+        <!-- ↓ arrow 2→3 -->
+        <line x1="170" y1="280" x2="170" y2="370" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr2)"/>
 
+        <!-- Node 3: Negative self-interpretation  y=370..430 -->
         <g onclick="showInfo2('The self-talk interpretation: this impairment means laziness, weakness, lack of discipline — not resource depletion. This is the crucial misattribution. It generates shame and self-directed anger, which are themselves emotional experiences requiring processing capacity to handle. The loop closes: the interpretation that tries to explain the failure actually worsens it.')" style="cursor:pointer">
-          <rect x="50" y="320" width="240" height="60" rx="10" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
-          <text x="170" y="347" text-anchor="middle" font-size="13" font-weight="500" fill="#501313" font-family="'DM Sans', sans-serif">Negative self-interpretation</text>
-          <text x="170" y="365" text-anchor="middle" font-size="12" fill="#A32D2D" font-family="'DM Sans', sans-serif">Laziness, failure, weakness</text>
+          <rect x="60" y="370" width="220" height="60" rx="10" fill="#FCEBEB" stroke="#E24B4A" stroke-width="0.5"/>
+          <text x="170" y="397" text-anchor="middle" font-size="13" font-weight="500" fill="#501313" font-family="'DM Sans', sans-serif">Negative self-interpretation</text>
+          <text x="170" y="415" text-anchor="middle" font-size="12" fill="#A32D2D" font-family="'DM Sans', sans-serif">Laziness, failure, weakness</text>
         </g>
+        <!-- ↓ arrow 3→4 -->
+        <line x1="170" y1="430" x2="170" y2="480" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr2)"/>
 
+        <!-- Node 4: Emotional stock / shame  y=480..540 -->
         <g onclick="showInfo2('Shame and self-criticism add to emotional stock — they are unprocessed feelings that now require executive resources to handle. This is the loop closing: depleted executive stock → impairment → shame → more emotional stock → further executive depletion → deeper impairment. Each cycle worsens the starting condition.')" style="cursor:pointer">
-          <rect x="390" y="196" width="240" height="60" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
-          <text x="510" y="223" text-anchor="middle" font-size="13" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional stock rises</text>
-          <text x="510" y="241" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">Shame added to backlog</text>
+          <rect x="60" y="480" width="220" height="60" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
+          <text x="170" y="507" text-anchor="middle" font-size="13" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional stock rises</text>
+          <text x="170" y="525" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">Shame added to backlog</text>
         </g>
 
-        <!-- Loop arrows -->
-        <path d="M 170 132 L 170 196" fill="none" stroke="#D85A30" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <path d="M 170 256 L 170 320" fill="none" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <path d="M 290 350 C 360 350, 380 290, 390 256" fill="none" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <path d="M 510 196 C 510 158, 360 130, 290 120" fill="none" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <!-- Return arrow: left side of node 4 → hugs left edge → left side of node 1 -->
+        <path d="M 60 510 C 48 510, 48 100, 60 100" fill="none" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr2)"/>
 
-        <text x="330" y="168" text-anchor="middle" font-size="26" fill="#D85A30" opacity="0.5" font-family="sans-serif">↻</text>
-        <text x="330" y="192" text-anchor="middle" font-size="11" fill="#D85A30" font-family="'DM Sans', sans-serif">amplifies</text>
+        <!-- ↻ amplifies label — just left of arrow -->
+        <text x="44" y="312" text-anchor="middle" font-size="10" fill="#D85A30" font-family="'DM Sans', sans-serif" transform="rotate(-90 44 312)">amplifies</text>
 
-        <!-- Divider -->
-        <line x1="380" y1="55" x2="380" y2="430" stroke="#D3D1C7" stroke-width="0.5" stroke-dasharray="4 4"/>
+        <!-- ══ RIGHT: BALANCING LOOP ══ -->
 
-        <!-- BALANCING LOOP -->
-        <text x="530" y="36" text-anchor="middle" font-size="13" font-weight="500" fill="#1C1B18" font-family="'DM Sans', sans-serif">Balancing loop</text>
-        <text x="530" y="52" text-anchor="middle" font-size="11" fill="#888780" font-family="'DM Sans', sans-serif">Titration seeks safe equilibrium</text>
-
-        <!-- Reinforcing symbol -->
-        <text x="530" y="36" text-anchor="middle" font-size="13" font-weight="500" fill="#1C1B18" font-family="'DM Sans', sans-serif">Balancing loop</text>
-
+        <!-- Node A: Emotional pressure  y=70..130 -->
         <g onclick="showInfo2('High emotional pressure means the valve — the metaphor for inward attention — needs careful management. Opening it too wide (sitting meditation) when pressure is high floods the system. Keeping it completely closed (constant distraction) lets pressure build indefinitely. The answer is calibrated opening.')" style="cursor:pointer">
-          <rect x="415" y="72" width="228" height="60" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
-          <text x="529" y="99" text-anchor="middle" font-size="13" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional pressure</text>
-          <text x="529" y="117" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">high / medium / low</text>
+          <rect x="400" y="70" width="220" height="60" rx="10" fill="#FBEAF0" stroke="#D4537E" stroke-width="0.5"/>
+          <text x="510" y="97" text-anchor="middle" font-size="13" font-weight="500" fill="#72243E" font-family="'DM Sans', sans-serif">Emotional pressure</text>
+          <text x="510" y="115" text-anchor="middle" font-size="12" fill="#993556" font-family="'DM Sans', sans-serif">high / medium / low</text>
         </g>
+        <!-- ↓ arrow A→B -->
+        <line x1="510" y1="130" x2="510" y2="270" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr2)"/>
 
+        <!-- Node B: Valve opening  y=270..330 -->
         <g onclick="showInfo2('The valve opening — how much inward attention you allow — adjusts to match current capacity. This is the titration mechanism. Too intense to sit? Do dishes. Still too intense? Add music. Still overwhelming? Try a podcast. This is not avoidance. It is strategic regulation of processing rate to protect the system from flooding.')" style="cursor:pointer">
-          <rect x="415" y="196" width="228" height="60" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
-          <text x="529" y="223" text-anchor="middle" font-size="13" font-weight="500" fill="#633806" font-family="'DM Sans', sans-serif">Valve opening adjusts</text>
-          <text x="529" y="241" text-anchor="middle" font-size="12" fill="#854F0B" font-family="'DM Sans', sans-serif">to current capacity</text>
+          <rect x="400" y="270" width="220" height="60" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+          <text x="510" y="297" text-anchor="middle" font-size="13" font-weight="500" fill="#633806" font-family="'DM Sans', sans-serif">Valve opening adjusts</text>
+          <text x="510" y="315" text-anchor="middle" font-size="12" fill="#854F0B" font-family="'DM Sans', sans-serif">to current capacity</text>
         </g>
+        <!-- ↓ arrow B→C -->
+        <line x1="510" y1="330" x2="510" y2="470" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr2)"/>
 
+        <!-- Node C: Processing occurs  y=470..530 -->
         <g onclick="showInfo2('When titration is calibrated correctly, the system processes emotional stock at a manageable rate — neither flooding nor accumulating indefinitely. The DMN activates, integration occurs, and emotional stock slowly decreases. Executive stock is preserved rather than overwhelmed. This is the healthy loop.')" style="cursor:pointer">
-          <rect x="415" y="320" width="228" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
-          <text x="529" y="347" text-anchor="middle" font-size="13" font-weight="500" fill="#085041" font-family="'DM Sans', sans-serif">Processing occurs</text>
-          <text x="529" y="365" text-anchor="middle" font-size="12" fill="#0F6E56" font-family="'DM Sans', sans-serif">at manageable rate</text>
+          <rect x="400" y="470" width="220" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+          <text x="510" y="497" text-anchor="middle" font-size="13" font-weight="500" fill="#085041" font-family="'DM Sans', sans-serif">Processing occurs</text>
+          <text x="510" y="515" text-anchor="middle" font-size="12" fill="#0F6E56" font-family="'DM Sans', sans-serif">at manageable rate</text>
         </g>
 
-        <path d="M 529 132 L 529 196" fill="none" stroke="#D4537E" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <path d="M 529 256 L 529 320" fill="none" stroke="#EF9F27" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <path d="M 415 350 C 390 350, 390 132, 415 102" fill="none" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <!-- Return arrow: right side of node C → hugs right edge → right side of node A -->
+        <path d="M 620 500 C 632 500, 632 100, 620 100" fill="none" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr2)"/>
 
-        <text x="392" y="232" text-anchor="middle" font-size="18" fill="#1D9E75" opacity="0.7" font-family="sans-serif">⇌</text>
-        <text x="392" y="255" text-anchor="middle" font-size="11" fill="#1D9E75" font-family="'DM Sans', sans-serif">regulates</text>
+        <!-- regulates label — just right of arrow -->
+        <text x="637" y="305" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="'DM Sans', sans-serif" transform="rotate(90 637 305)">regulates</text>
 
-        <text x="185" y="444" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Reinforcing loops amplify</text>
-        <text x="530" y="444" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Balancing loops regulate</text>
+        <!-- ── FOOTER ── -->
+        <text x="170" y="585" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Reinforcing loops amplify</text>
+        <text x="510" y="585" text-anchor="middle" font-size="11" fill="#A8A79F" font-family="'DM Sans', sans-serif">Balancing loops regulate</text>
       </svg>
     </div>
     <div class="info-box" id="info-box-2">
